@@ -7,13 +7,10 @@ export const useStore = defineStore({
         keySearch:'',
         directorSearch: '',
         filterByGenere: '',
-        adminSearch: '',
+        filterByActor: '',
     }),
 
     getters: {
-        getAdminSearch() {
-            return this.adminSearch
-        },
 
         getKeySearch() {
             return this.keySearch
@@ -21,6 +18,10 @@ export const useStore = defineStore({
         getDirectorSearch() {
             return this.directorSearch
         },
+        getFilterByActor() {
+            return this.filterByActor
+        },
+
         getFilterByGenere(){
             return this.filterByGenere
         }
@@ -29,16 +30,21 @@ export const useStore = defineStore({
     actions: {
        setKeySearch(word){
         this.keySearch = word
+        
+
        },
-       setDirectorSearch(name){
-        this.directorSearch = name
+       setDirectorSearch(id){
+        this.directorSearch = id
+
        },
-       setFilterByGenere(genere){
-        this.filterByGenere = genere
+       setFilterByActor(id){
+        this.filterByActor = id
        },
-       setAdminSearch(word){
-        this.adminSearch = word
-        },
+       setFilterByGenere(id){
+
+        this.filterByGenere = id
+       }
+    
     }
 })
 

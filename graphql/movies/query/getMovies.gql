@@ -1,23 +1,15 @@
-query getMovies {
-  movies {
+query getMovies($query: movies_bool_exp) {
+  movies(where: $query) {
     date
-    director {
-      first_name
-      id
-      last_name
-      image {
-        url
-      }
-    }
-    image{
-      id
-      url
-    }
     discrption
     duration
     id
     title
     status
+    image{
+      id
+      url
+    }
     movies_generes {
       genere {
         name

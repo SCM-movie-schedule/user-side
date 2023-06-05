@@ -4,14 +4,40 @@
 import {useAuthStore} from '@/stores/modules/auth'
 import updateUserMutation from '@/graphql/auth/updateUser.gql'
 import mutation from '@/composables/mutation'
-const authStore = useAuthStore()
+import { Form, Field } from 'vee-validate';
+import * as Yup from 'yup';
 
+// vee-validate
+const schema = Yup.object().shape({
+    firstName: Yup.string().required('First name is required'),
+    lastName: Yup.string().required('Last name is required'),
+    email: Yup.string()
+      .required('Email is required')
+      .email('Email is invalid'),
+    password: Yup.string()
+    .required('Current password is required'),
+   
+    newPassword: Yup.string().nullable()
+    .min(6, 'Password must be at least 6 characters'),
+    confirmPassword: Yup.string()
+    // .when('newPassword', {
+    //   is: (val) => val && val.length > 0,
+    //   then: Yup.string()
+    //     .required('Confirm password is required')
+    //     .oneOf(
+    //       [Yup.ref('newPassword'), null],
+    //       'Passwords must match'
+    //     ),
+    //   otherwise: Yup.string(),
+    // }),
+});
+const authStore = useAuthStore()
 const user = ref({
-    firstName:null,
-    lastName: null,
-    email: null,
-    password: null,
-    newPassword: null,
+    firstName:'',
+    lastName: '',
+    email: "",
+    password: "",
+    newPassword: "",
 })
 
 function getUser(){
@@ -45,7 +71,7 @@ function updateUser(){
         password: user.value.password,
         newPassword: user.value.newPassword,
     }
-    mutate({data})
+    // mutate({data})
 }
 
 onDone((result)=>{
@@ -60,50 +86,75 @@ onError(error=>{
     console.log(error)
     serverError.error = true
     serverError.message = error.message
-    
 })
 
 definePageMeta({
     layout: "userpanel",
-    // middleware: '[user]'
-
+    middleware:["user"]
 });
+// form handling
+// form validation
+// form submission
+// what are simple requirements
 
 </script>
 
 <template>
     <div v-if="user" class=" lg:ml-6  w-full">
-        <form @submit.prevent="updateUser" action="">
+        <Form @change="invalidCredential = false"  @submit.prevent="updateUser" :validation-schema="schema" v-slot="{ errors }">
             <!-- first name and last name -->
             <div class=" w-full  mb-4  flex">
                 <div  class=" w-full mr-4 text-primary9 ">
-                    <label for="first_name" >First Name<span class=" text-red font-bold  text-lg">*</span></label>
-                    <input type="text" id="first_name" v-model="user.firstName" class="w-full border border-gray p-3 ">
+                    <label for="firstName" >First Name<span class=" text-red font-bold  text-lg">*</span></label>
+                    <Field name="firstName" type="text" id="firstName" v-model="user.firstName" class="w-full border border-gray focus:border-yellow-bright  p-3 " :class="{ 'border-red': errors.firstName }"/>
+                    <transition name="error">
+                        <span class="text-red text-sm" >{{errors.firstName}}</span>
+                    </transition>
                 </div>
                 <div class=" w-full ml-4 text-primary9">
-                    <label for="last_name">Last Name<span class=" text-red font-bold  text-lg">*</span></label>
-                    <input type="text" id="last_name" v-model="user.lastName" class="w-full border border-gray p-3 ">
+                    <label for="lastName">Last Name<span class=" text-red font-bold  text-lg">*</span></label>
+                    <Field name="lastName" type="text" id="lastName" v-model="user.lastName" class="w-full border border-gray focus:border-yellow-bright  p-3 " :class="{ 'border-red': errors.lastName }"/>
+                    <transition name="error">
+                        <span class="text-red text-sm" >{{errors.lastName}}</span>
+                    </transition>
+            
                 </div>
-            </div>  
+            </div> 
+             <!--Email  -->
             <div class=" w-full text-primary9">
-                <label for="last_name">Email Address<span class=" text-red font-bold  text-lg">*</span></label>
-                <input type="text" id="email" v-model="user.email" class="w-full border border-gray p-3 ">
+                <label for="lastName">Email Address<span class=" text-red font-bold  text-lg">*</span></label>
+                <Field name="email"  v-model="user.email" type="email" class="w-full p-3 border border-gray     focus:border-yellow-bright "  placeholder="Your email" :class="{ 'border-red': errors.email }" />
+                <transition name="error">
+                    <span class="text-red text-sm" >{{errors.email}}</span>
+                </transition>
             </div>
 
             <!-- Password Change -->
-            <div class=" relative p-4 border border-gray mt-6">
+            <div class=" relative p-4 border border-gray focus:border-yellow-bright  mt-6">
                 <p class=" text-primary9 absolute -top-3 z-30 bg-white">Change Password</p>
+                <!-- Old password -->
                 <div class=" my-6 w-full text-primary9">
-                    <label for="last_name">Current password (leave blank to leave unchanged)<span class=" text-red font-bold  text-lg">*</span></label>
-                    <input type="password" id="password" v-model="user.password" class="w-full border border-gray p-3 ">
+                    <label for="password">Current password (leave blank to leave unchanged)<span class=" text-red font-bold  text-lg">*</span></label>
+                    <Field name="password"  v-model="user.password" type="password" class="w-full  p-3 border border-gray      focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your password" :class="{ 'border-red': errors.password }" />
+                    <transition name="error">
+                        <span class="text-red text-sm" >{{errors.password}}</span>
+                    </transition>
                 </div>
+                <!-- New Password -->
                 <div class=" my-6 w-full text-primary9">
-                    <label for="last_name">New password (leave blank to leave unchanged)<span class=" text-red font-bold  text-lg">*</span></label>
-                    <input type="password" id="new-password" v-model="user.newPassword" class="w-full border border-gray p-3 ">
+                    <label for="newPassword">New password (leave blank to leave unchanged)<span class=" text-red font-bold  text-lg">*</span></label>
+                    <Field name="newPassword"  v-model="user.newPassword" type="password" class="w-full  p-3 border border-gray     focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your password" :class="{ 'border-red': errors.newPassword }" />
+                    <transition name="error">
+                        <span class="text-red text-sm" >{{errors.newPassword}}</span>
+                    </transition>
                 </div>
+                <!-- Confirm Password -->
                 <div class=" mt-6 w-full text-primary9">
-                    <label for="last_name">Confirm new password<span class=" text-red font-bold  text-lg">*</span></label>
-                    <input type="password" id="confirm"  class="w-full border border-gray p-3 ">
+                    <label for="confirm">Confirm new password<span class=" text-red font-bold  text-lg">*</span></label>
+                    <Field name="confirmPassword" type="password" class="w-full  p-3 border border-gray       focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your password" :class="{ 'border-red': errors.confirmPassword }" />
+                    <transition name="error">
+                        <span class="text-red text-sm" >{{errors.confirmPassword}}</span>
+                    </transition>
                 </div>    
             </div>
             <div class=" relative m-0 bg-gray-dark py-4 w-48 text-center font-bold text-white">
@@ -111,7 +162,7 @@ definePageMeta({
                 <span v-if="loading" a class=" absolute left-20 top-3 animate-spin text-9xl inline-block w-8 h-8 border-[3px] border-current border-t-transparent  text-yellow-bright rounded-full" role="status" aria-label="loading"></span>
 
             </div>
-        </form>
+        </Form>
         <teleport to="body">
             <transition name="book">
                 <div v-if="updated"

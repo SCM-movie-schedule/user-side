@@ -1,71 +1,59 @@
 <script setup>
-
-const name = useCookie('name')
-definePageMeta({
-  layout: "movies", 
-});
 import { Form, Field } from 'vee-validate';
 import loginMutation from '@/graphql/auth/login.gql'
-
+import authentication from '@/composables/authentication'
 import * as Yup from 'yup';
 import { ref, watch} from 'vue'
 import { useRouter, useRoute, onBeforeRouteLeave} from 'vue-router'
 import { useAuthStore } from '@/stores/modules/auth'
-const authToken = useCookie('auth-token',  { path: '/' }, { expires: 60 * 60 * 24 * 10 })
+const userToken = useCookie('user-token',  { path: '/' }, { expires: 60 * 60 * 24 * 10 })
 const router = useRouter();
 const authStore = useAuthStore();
  
- 
- const schema = Yup.object().shape({
-     email: Yup.string().required('Email is required'),
-     password: Yup.string().required('Password is required')
- });
- 
- 
- 
- const invalidCredential = ref(false);
- const variables = ref({email: "",password: ""});
- let isloading = ref(false);
- const someThingWrong = ref(false);
- 
- 
- function handleLogin() {
-     const {mutate, onDone, loading, onError } = useMutation(
-         loginMutation,
-         () => ({
-           fetchPolicy: "network-only"
-         //   clientId: 'authClient'
-         })
-     );
-     isloading = loading
-     mutate({data: {...variables.value}})
-     onDone((result) => {
-         // check if result has value
-         if (result && result.data) {
-            console.log(result.data.login)
-            // store token on cookie
-             authToken.value = 'Bearer '+ result.data.login.token
-             authStore.setToken(result.data.login.token)
-             authStore.setId(result.data.login.id)
-             authStore.setRole(result.data.login.role)
-             authStore.setUser(result.data.login.id)
-             if(result.data.login.role === 'admin'){
-                router.push('/admin')
-             }else{
-                router.push('/user')
-             }
-         }
-     });
-     onError((error) => {
-        if(error.message.includes('Invalid')){
-            invalidCredential.value = true
-        }else{
-            someThingWrong.value = true
-        }
-        console.log(error , 66767)
-     });
- } 
+// vee-validate
+const schema = Yup.object().shape({
+    email: Yup.string()
+    .required('email is required')
+    .email("email is invalid "),
+    password: Yup.string().required('Password is required')
+});
 
+// reactive datas
+const invalidCredential = ref(false);
+const variables = ref({email: "",password: ""});
+const someThingWrong = ref(false);
+
+const {mutate, onDone, loading, onError } = authentication(loginMutation)
+// on done the user data has to setted so on done setAuthData is called
+onDone((result) => {
+    userToken.value = 'Bearer '+ result.data.login.token
+    authStore.setUserId(result.data.login.id)
+    authStore.setToken(userToken.value)
+    router.push('/user')
+});
+
+// on error the type of error is checked from error message
+// if error messge includes the word Invalid then the error is the result of invalid data
+// else the error come for diffirent reasons such internet connection, server erros and so on
+
+onError((error) => {
+    if(error.message.includes('Invalid')){
+        invalidCredential.value = true
+    }else{
+        someThingWrong.value = true
+    }
+    console.log(error , "When Login")
+});   
+
+// function to handle mutate
+function handleLogin() {
+    console.log(variables, 'from login')
+    mutate({data: {...variables.value}})
+} 
+// layout
+definePageMeta({
+  layout: "movies", 
+});
  </script>
  <template>
  <div class="login pt-16 ">
@@ -118,22 +106,22 @@ const authStore = useAuthStore();
                                  </label>
                              </div>
                              <div class="text-sm">
-                                 <router-link to="/auth/forgotPassword" href="#" class="text-orange-400 hover:text-orange-600">
+                                 <NuxtLink to="/auth/forgotPassword" href="#" class="text-orange-400 hover:text-orange-600">
                                      Forgot your password?
-                                 </router-link>
+                                 </NuxtLink >
                              </div>
                          </div>
                          <div class="flex justify-center">
-                         <button  :disabled="isloading" type="submit" :class="{'bg-yellow-orange':isloading, 'hover:bg-orange-00':isloading,}" class=" w-44 flex justify-center bg-yellow-bright  opacity-80 hover:opacity-100 text-white  p-3  rounded-full  tracking-wide font-semibold shadow-lg  cursor-pointer transition  ease-in duration-400 ">
+                         <button  :disabled="loading" type="submit" :class="{'bg-yellow-orange':loading, 'hover:bg-orange-00':loading,}" class=" w-44 flex justify-center bg-yellow-bright  opacity-80 hover:opacity-100 text-white  p-3  rounded-full  tracking-wide font-semibold shadow-lg  cursor-pointer transition  ease-in duration-400 ">
                              Sign in
-                            <span v-if="isloading" a class=" absolute animate-spin text-9xl inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                            <span v-if="loading" a class=" absolute animate-spin text-9xl inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
                          </button>
                          </div>
                      </Form>
                      </div>
                      <div class="mt-4">
                          <p class="hover:text-orange-500 text-orange-400">
-                             <router-link to="/auth/signup">Register Now </router-link>
+                             <NuxtLink to="/auth/signup">Register Now </NuxtLink >
                          </p>
                      </div>
                      <div class="pt-5 text-center text-gray-400 text-xs">

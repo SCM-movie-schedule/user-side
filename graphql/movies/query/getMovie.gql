@@ -1,6 +1,10 @@
 query MyQuery($id : uuid!) {
   movies_by_pk(id: $id) {
     date
+    title
+    discrption
+    duration
+    id
     director {
       first_name
       id
@@ -10,12 +14,6 @@ query MyQuery($id : uuid!) {
         url
       }
     }
-    cover_image
-
-    title
-    discrption
-    duration
-    id
     image {
       id
       url

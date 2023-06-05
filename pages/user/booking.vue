@@ -5,60 +5,33 @@ import query from '@/composables/query.js'
 import { useAuthStore } from '~/stores/modules/auth';
 import mutation from "~/composables/mutation";
 import unBookMovie from "~/graphql/bookings/unbook.gql"
-const movies = ref([])
-const bookings = ref([])
+
 const authStore  = useAuthStore()
-const setMovies = (movieBookings)=>{
-    movieBookings.forEach(book => {
-        movies.value.push(book.movie)
-        bookings.value.push(book.id)
-    });
-}
-// console.log('user id from book page', authStore.getUserId, authStore.getUser)
-if(authStore.getUser){
-    console.log('Yes user ')
-    setMovies(authStore.getUser.bookings)
-}
-
-function newId(){
-    return authStore.getUserId
-}
-function getUser(){
-    return authStore.getUser
-}
-watch(getUser, (newVal, oldVal) => {
-    console.log(newVal.bookings)
-    if(!newVal) return
-    newVal.bookings.forEach(book => {
-    movies.value.push(book.movie)
-    bookings.value.push(book.id)
-    });
-})
-
 
 // fetch user data with movies
 definePageMeta({
     layout: "userpanel",
-    // middleware: '[user]'
+    middleware:["user"]
 });
 
 const movieBooked = ref(false)
-const deletedIndex = ref(0)
 // unbooking
 const {mutate, onDone, loading, onError } = mutation(unBookMovie, 'user');
 
-provide('unbook', (index) => {
-    deletedIndex.value = index
-    mutate({id: bookings.value[index]})
+
+const deletedBookingId = ref(null)
+
+provide('unbook', (id) => {
+    deletedBookingId.value = id
+    mutate({id})
 })
 
 onDone((result) => {
     movieBooked.value = true
-    movies.value.splice(deletedIndex.value, 1)
+    authStore.removeBooking(deletedBookingId.value)
     setTimeout(() => {
         movieBooked.value = false
-    }, 5000);
-   
+    }, 5000);   
 });
 
 onError((error) => {
@@ -66,10 +39,12 @@ onError((error) => {
     window.alert('Something went wrong')
 });
 
+const isloading = ref(true)
+
 </script>
 <template> 
-    <div v-if="movies.length > 0" class="app relative">
-        <BookingList :movies="movies"></BookingList>
+    <div v-if="authStore.getUser?.bookings?.length > 0" class="app relative">
+        <BookingList :bookings="authStore.getUser.bookings"></BookingList>
         <teleport to="body">
             <transition name="book">
                 <div v-if="movieBooked"
@@ -79,6 +54,7 @@ onError((error) => {
             </transition>
         </teleport>  
     </div>
+    <BaseSpinner v-else-if="isloading && !authStore.getUser"></BaseSpinner>
     <div v-else class=" border-t-4 border-t-yellow-bright items-center  flex px-6 w-full justify-between py-8 bg-gray-dark">
         <p class=" text-white">No Movie has been Booked yet</p>
         <div class=" border border-yellow-bright rounded-full ">

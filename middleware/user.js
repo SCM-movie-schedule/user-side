@@ -1,8 +1,7 @@
 import {useAuthStore} from "@/stores/modules/auth"
 export default defineNuxtRouteMiddleware((to, from , next) => {
     const authStore = useAuthStore()
-    // authStore.autoLogin()
-    console.log('authStore.isLoggedIn: tenh go ', authStore.isLoggedIn)
+    // if is logged in false and user has no token on cookie
     if (authStore.isLoggedIn) {
         return
     }

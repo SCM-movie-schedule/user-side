@@ -1,8 +1,4 @@
-
 <script setup>
-import { ref } from "vue";
-const selectedLink = ref('')
-
 
 import {useAuthStore} from '~/stores/modules/auth'
 const authStore = useAuthStore()
@@ -15,57 +11,84 @@ const logout = () => {
 </script>
 
 <template>
-    <aside class="bg-gradient-to-br from-gray-dark  to-gray-dark  overflow-hidden z-0 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-80 rounded-xl transition-transform duration-300 xl:translate-x-0">
-        <div class="relative border-b border-white/20">
-            <NuxtLink  class="flex items-center gap-4 py-6  px-8" to="/">
-                <img src="../../assets/img/logo.png" class="inline-block relative object-cover object-center  rounded-md">
-                <span class=" text-xl tracking-normal font-sans  font-semibold leading-relaxed text-white"> Admin Panel</span>
-            </NuxtLink>
-        </div>
-        <div class="m-4">
-            <ul class="mb-4 flex flex-col gap-1  text-white font-bold">
-                <li class="  ">
-                    <NuxtLink class=" block py-4 rounded-md w-full  hover:bg-primary7"  to="/admin" >
-                        <img class="w-5 mr-2.5 inline" src="../../assets/img/home-svgrepo-com1.svg" alt="Home Image">
-                        Dashboard
-                    </NuxtLink>
-                </li>
-                <li class=" ">
-                    <NuxtLink class=" block py-4 rounded-md w-full  hover:bg-primary7" active-class="bg-yellow-bright" to="/admin">
-                        <img class="w-5 mr-2.5 inline" src="../../assets/img/home-svgrepo-com1.svg" alt="Home Image">
-                        
-                        Movies List</NuxtLink>
-                </li>
-                <li class=" ">
-                    <NuxtLink class=" block py-4 rounded-md w-full  hover:bg-primary7" active-class="bg-yellow-bright" to="/admin/actors">
-                        <img class="w-5 mr-2.5 inline" src="../../assets/img/home-svgrepo-com1.svg" alt="Home Image">
-                        Actors List</NuxtLink>
-                </li>
-                <li class=" ">
-                    <NuxtLink class=" block py-4 rounded-md w-full  hover:bg-primary7" active-class="bg-yellow-bright" to="/admin/directors">
-                        <img class="w-5 mr-2.5 inline" src="../../assets/img/home-svgrepo-com1.svg" alt="Home Image">
-                        Directors List</NuxtLink>
-                </li>
+    <div class="w-full px-4 lg:w-80 mr-6">
 
-                <h3 class=" text-primary5 font-bold p-4">ADD PAGES</h3>
-                <li class="">
-                    <NuxtLink class=" block py-4 rounded-md w-full  hover:bg-primary7" active-class="bg-yellow-bright" to="/admin/actors/addActor">
-                        <img class="w-5 mr-2.5 inline" src="../../assets/img/home-svgrepo-com1.svg" alt="Home Image">
-                        Add Actor</NuxtLink>
-                </li>
-                <li class="  ">
-                    <NuxtLink class=" block py-4 rounded-md w-full  hover:bg-primary7" active-class="bg-yellow-bright" to="/admin/movies/addMovie">
-                        <img class="w-5 mr-2.5 inline" src="../../assets/img/home-svgrepo-com1.svg" alt="Home Image">
-                        Add Movie</NuxtLink>
-                </li>
-                <li class="">
-                    <NuxtLink active-class="bg-yellow-bright" class=" block py-4 rounded-md w-full  hover:bg-primary7"  to="/admin/directors/addDirector">
-                        <img class="w-5 mr-2.5 inline" src="../../assets/img/home-svgrepo-com1.svg" alt="Home Image">
-                        Add Director</NuxtLink>
-                </li>
-                
         <div class="">
-            <button @click="logout"  class="w-full items-center flex  space-x-2   text-left   bg-gray-dark mb-2 text-white font-bold p-4 hover:bg-yellow-bright" >
+            
+            <NuxtLink class=" items-center flex  space-x-4   bg-gray-dark mb-2 text-white font-bold p-4 hover:bg-yellow-bright" active-class="bg-yellow-bright" to="/user">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="20"
+                    height="20"
+                    class="text-white cursor-pointer"
+                viewBox="0 0 24 24">
+                <path
+                fill="currentColor"
+
+                 d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z" />
+                </svg>
+                Dashboard</NuxtLink>
+        </div>
+        <div class="">
+            <NuxtLink class=" items-center flex  space-x-4  bg-gray-dark   mb-2 text-white font-bold p-4 hover:bg-yellow-bright" active-class="bg-yellow-bright" to="/user/booking">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="20"
+                    height="20"
+                    class="text-white cursor-pointer"
+                viewBox="0 0 24 24">
+                <path
+                fill="currentColor"
+            d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M18 14L15.5 12.5L13 14V6H18V14Z"
+
+                  />
+                </svg>
+                Bookings</NuxtLink>
+        </div>
+        <div class="">
+            <NuxtLink class=" items-center flex  space-x-4  bg-gray-dark   mb-2 text-white font-bold p-4 hover:bg-yellow-bright" active-class="bg-yellow-bright" to="/user/tickets">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="20"
+                    height="20"
+                    class="text-white cursor-pointer"
+                viewBox="0 0 24 24">
+                <path
+                fill="currentColor"
+            d="M15.58,16.8L12,14.5L8.42,16.8L9.5,12.68L6.21,10L10.46,9.74L12,5.8L13.54,9.74L17.79,10L14.5,12.68M20,12C20,10.89 20.9,10 22,10V6C22,4.89 21.1,4 20,4H4A2,2 0 0,0 2,6V10C3.11,10 4,10.9 4,12A2,2 0 0,1 2,14V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V14A2,2 0 0,1 20,12Z"
+                  />
+                </svg>
+                Tickets</NuxtLink>
+        </div>
+        <div class="">
+            <NuxtLink class=" items-center flex  space-x-4  bg-gray-dark   mb-2 text-white font-bold p-4 hover:bg-yellow-bright" active-class="bg-yellow-bright" to="/user/accounts">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="20"
+                    height="20"
+                    class="text-white cursor-pointer"
+                viewBox="0 0 24 24">
+                <path
+                fill="currentColor"
+            d="M6,17C6,15 10,13.9 12,13.9C14,13.9 18,15 18,17V18H6M15,9A3,3 0 0,1 12,12A3,3 0 0,1 9,9A3,3 0 0,1 12,6A3,3 0 0,1 15,9M3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5C3.89,3 3,3.9 3,5Z"
+                  />
+                </svg>
+                Account</NuxtLink>
+        </div>
+        <div class="">
+            <NuxtLink class=" items-center flex  space-x-4  bg-gray-dark   mb-2 text-white font-bold p-4 hover:bg-yellow-bright" active-class="bg-yellow-bright" to="/user/notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="20"
+                    height="20"
+                    class="text-white cursor-pointer"
+                viewBox="0 0 24 24">
+                <path
+                fill="currentColor"
+            d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21"
+                  />
+                </svg>
+                Notification</NuxtLink>
+        </div>
+    
+       
+        <div class="">
+            <button @click="logout"  class="w-full items-center flex  space-x-4   text-left   bg-gray-dark mb-2 text-white font-bold p-4 hover:bg-yellow-bright" >
                 <svg xmlns="http://www.w3.org/2000/svg" 
                      width="20"
                     height="20"
@@ -78,19 +101,6 @@ const logout = () => {
                 </svg>
                 Logout</button >
         </div>
-                <!-- <li class=" p-4 rounded-md hover:bg-primary7 ">
-                    <NuxtLink to="/admin/movies">
-                        Logout</NuxtLink>
-                </li> -->
-            </ul>
-          
-        </div>
-    </aside>
-       
+        
+    </div>
 </template>
-<style scoped>
-.bg-yellow-bright{
-    background-color: #E4D804;
-}
-
-</style>

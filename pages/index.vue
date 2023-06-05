@@ -1,27 +1,25 @@
 <script setup>
+
 // graphql queris to fetch data
 import getMovies from '@/graphql/movies/query/getMovies.gql'
-import keyWordSearch from '@/graphql/movies/query/keyWordSearch.gql'
-import searchByDirector from '@/graphql/movies/query/searchByDirector.gql'
-import filterMovieByGenere from '@/graphql/movies/query/filterMovieByGenere.gql'
-
-
 import query from '@/composables/query.js'
 import {useStore} from "~/stores/index"
 const store  = useStore()
 
-// function to assgin movie result 
+// refs 
 let movies = ref([])
 let isloading = ref(false)
+const serverError = reactive({
+    error: false,
+    message: ''
+})
 
+// function to set movies, this function is called from serach and filter functions 
 function setMovies(result){
     movies.value = []
     result.data.movies.forEach(movie => {
-        if(movie.status == 'active'){
-            movies.value.push(movie)
-        }
+        movies.value.push(movie)
     });
-    // console.log(movies.value)
 }
 
 // function to set Error 
@@ -31,107 +29,128 @@ function setError(error){
     console.log(error)
 }
 
-function refresh(){
-    let { onResult, loading, onError, refetch } = query(getMovies, {})
+// excute query to load movies  
+function loadMovies(variables){
+    let { onResult, loading, onError, refetch } = query(getMovies, variables)
     isloading = loading
     onResult((result) => { setMovies(result)})
-    onError((error) => {setError(error) })
+    onError((error) => {setError(error);  })
 }
 
-// check if searching and filtering are seted else load all movies
+
+
+// select by which movies are filtered or searched
 if(store.getDirectorSearch != ''){
     console.log('There is director search')
     searchMovieByDirector(store.getDirectorSearch)
+    store.setDirectorSearch('')
+
 }else if(store.getFilterByGenere != ''){
     console.log('There is genere search')
-
     filterByGenere(store.getFilterByGenere)
-}
-else{
-    console.log('There is refresh search')
+    store.setFilterByGenere('')
+}else if(store.getFilterByActor != ''){
+    console.log('There is actor search')
+    filterByActor(store.getFilterByActor)
+    store.setFilterByActor('')
+}else{
+    console.log('There is refresh search'    )
     refresh()
 }
-const serverError = reactive({
-    error: false,
-    message: ''
-})
 
 
-
-// Serach by keyWord
-const getKeyWord = ()=>{
-    return store.getKeySearch
-}
-watch(getKeyWord, (newValue, oldValue) => {
-    const search = {
-        title: `%${newValue}%`,
-        discrption: `%${newValue}%`
-    }
-    let { onResult, loading, onError, refetch } = query(keyWordSearch, search)
-    isloading = loading
-    onResult((result) => { setMovies(result)})
-    onError((error) => {setError(error) })
-
-})
-
-function searchMovieByDirector(newValue){
-    let first_name = newValue;
-    let last_name = newValue
-
-    if(newValue.split(' ').length > 1){
-        first_name = newValue.split(' ')[0]
-        last_name = newValue.split(' ')[1]
-    }
-    
-    const search = {
-        first_name: `%${first_name}%`,
-        last_name: `%${last_name}%`
-    }
-    console.log(search)
-    let { onResult, loading, onError, refetch } = query(searchByDirector, search)
-    isloading = loading
-    onResult((result) => { setMovies(result)})
-    onError((error) => {setError(error);  })
-}
-
-// Search by Directore
+// getters
+// Serach and filter by director
 const getDirectorSearch = ()=>{
     return store.getDirectorSearch
 }
-
-function setDirectorSearch(event){
-    store.setDirectorSearch(event.target.value)
-}
-
+// fitler by genere
 function getFilterByGenere(){
     return store.getFilterByGenere
 }
+// filter by actor
+function getFilterByActor(){
+    return store.getFilterByActor
+}
+// filter by keyWord
+const getKeyWord = ()=>{
+    return store.getKeySearch
+}
 
-
+// Watchers
+// this watcher is used to watch the change of the store and call the function
 watch(getFilterByGenere, (newValue, oldValue) => {
+    if(newValue == ''){
+        return
+    }
     filterByGenere(newValue)
 })
 watch(getDirectorSearch, (newValue, oldValue) => {
+    if(newValue == ''){
+        return
+    }
     searchMovieByDirector(newValue)
 })
-// filter movie by genere
-
-function filterByGenere(genere){
-    console.log('Search by genere is called ', genere)
-    const search = {
-        genere: `%${genere}%`
+watch(getFilterByActor, (newValue, oldValue) => {
+    if(newValue == ''){
+        return
     }
-    let { onResult, loading, onError, refetch } = query(filterMovieByGenere, search)
-    isloading = loading
-    onResult((result) => { setMovies(result)})
-    onError((error) => {setError(error);  })
+    console.log('watcher is called', newValue, oldValue)
+    filterByActor(newValue)
+})
+watch(getKeyWord, (newValue, oldValue) => {
+    if(newValue == ''){
+        return
+    }
+    keyWordSearch(newValue)
+})
+
+// functions to load movies 
+//1. Refresh if there is no search or filter, this function is called to refresh the movies
+function refresh(){
+    const variables = {
+        query: {
+            status: {
+                _eq: 'active'
+            }
+        }
+    }
+    loadMovies(variables)
+}
+
+//2. search movie by director first name and last name
+function searchMovieByDirector(name){
+    const variables = searchbydirector(name)
+    loadMovies(variables)
+}
+
+//3. filter movie by actor
+function filterByActor(actorId){
+    const variables = filterbyactor(actorId)
+    loadMovies(variables)
+}
+
+// 4. filter movie by genere
+function filterByGenere(genereId){
+    const variables = filterbygenere(genereId)
+    loadMovies(variables)
+}
+// 5. key word search
+
+function keyWordSearch(keyWord){
+    const variables = keywordsearch(keyWord)
+    loadMovies(variables)
+}
+
+// Listen to the search director input event and call search by director function
+function setDirectorSearch(event){
+    searchMovieByDirector(event.target.value)
 }
 
 
 definePageMeta({
     layout: "movies",
 });
-
 </script>
 <template>
 
@@ -151,7 +170,6 @@ definePageMeta({
                     <img   src="@/assets/img/preloader.svg" alt="">
                 </div>
             </BasePopup>
-            <!-- <BaseSpinner v-if="isloading"></BaseSpinner> -->
            
             <!-- Search Movie by director and Header -->
             <div id="movieslist" v-if="!serverError.error"  class=" px-4 flex flex-col justify-center items-center z-50  lg:flex-row lg:justify-between relative container mx-auto">

@@ -33,5 +33,10 @@ query getUser($id:uuid!) {
         }
       }
     }
+    users_notifications{
+      id
+      message
+      time
+    }
   }
 }

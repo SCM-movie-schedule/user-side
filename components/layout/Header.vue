@@ -4,8 +4,6 @@ import {useStore} from "~/stores/index"
 const router = useRouter()
 const route = useRoute()
 
-
-
 const authStore = useAuthStore()
 const generes = reactive([]);
 import getGeneres from "@/graphql/generes/getGeneres.gql";
@@ -18,16 +16,15 @@ onResult((result) => {
 });
 onError((error) => {
   console.log(error, "error from getGeneres");
-  router.push("/error");
+  // router.push("/error");
 });
 
 const store  = useStore()
-
 function searchByKey(event){
   store.setKeySearch(event.target.value)
 }
 
- function gotoMovieList() {
+function gotoMovieList() {
   router.push({
     path: '/',
     hash: '#movieslist'
@@ -38,18 +35,15 @@ const profileImage = computed(() => {
   return authStore.getUser?.image?.url
 })
 
-const link = computed(()=>{
-  console.log('role', authStore.getRole)
-  return '/'+authStore.getRole
-})
+
 
 const displayGenere = ref(false)
 const smallScreenGenere = ref(false)
 
 
-function filterMovieByGenere(genere){
+function filterMovieByGenere(genereId){
   smallScreenGenere.value = false
-  store.setFilterByGenere(genere)
+  store.setFilterByGenere(genereId)
   router.push({
     path: '/',
     hash: '#movieslist'
@@ -82,7 +76,13 @@ const displayLinks = ref(false)
             <NuxtLink to="/">GENERE</NuxtLink>
           </li>
           <li  class=" text-white font-bold">
-            <NuxtLink to="/">CONTACTS</NuxtLink>
+            <NuxtLink active-class=" text-yellow-bright"  to="/pricing">PRICING</NuxtLink>
+          </li>
+          <li  class=" text-white font-bold">
+            <NuxtLink active-class=" text-yellow-bright"  to="/contactus">CONTACT</NuxtLink>
+          </li>
+          <li  class=" text-white font-bold">
+            <NuxtLink active-class=" text-yellow-bright"  to="/faq">FAQ</NuxtLink>
           </li>
         </ul>
         <!-- for search bar -->
@@ -90,8 +90,8 @@ const displayLinks = ref(false)
             <input @input="searchByKey" @focus="gotoMovieList" placeholder="any keyword" class="py-3 px-12  bg-gray-dark focus:bg-white    rounded-full">
         </div>
         <div v-if="authStore.isLoggedIn" class="w-12 hidden lg:block h-12 border-4 border-yellow-bright rounded-full overflow-hidden">
-          <NuxtLink   :to="link">
-            <img :src="profileImage" class="object-cover"   alt="">
+          <NuxtLink   to="/user">
+            <img src="@/assets/img/default-avatar.png" class="object-cover"   alt="">
             </NuxtLink>
         </div>
         <div v-else>
@@ -114,13 +114,14 @@ const displayLinks = ref(false)
             <NuxtLink active-class=" text-yellow-bright" class=" hover:text-yellow-bright text-white font-bold " to="/user">Profile</NuxtLink>
             </p>
             <p class=" text-left uppercase my-2  text-white font-bold hover:text-yellow-bright">
-            <NuxtLink active-class=" text-yellow-bright" class=" hover:text-yellow-bright text-white font-bold   " to="/user">Pricing</NuxtLink>
+            <NuxtLink active-class=" text-yellow-bright" class=" hover:text-yellow-bright text-white font-bold   " to="/pricing">Pricing</NuxtLink>
+            </p>
+            
+            <p class=" text-left uppercase my-2  text-white font-bold hover:text-yellow-bright">
+            <NuxtLink active-class=" text-yellow-bright" class=" hover:text-yellow-bright text-white font-bold   " to="/contactus">Contact</NuxtLink>
             </p>
             <p class=" text-left uppercase my-2  text-white font-bold hover:text-yellow-bright">
-            <NuxtLink active-class=" text-yellow-bright" class=" hover:text-yellow-bright text-white font-bold   " to="/user">About</NuxtLink>
-            </p>
-            <p class=" text-left uppercase my-2  text-white font-bold hover:text-yellow-bright">
-            <NuxtLink active-class=" text-yellow-bright" class=" hover:text-yellow-bright text-white font-bold   " to="/user">Contact</NuxtLink>
+            <NuxtLink active-class=" text-yellow-bright" class=" hover:text-yellow-bright text-white font-bold   " to="/faq">FAQ</NuxtLink>
             </p>
           </div>
         </div>
@@ -132,7 +133,7 @@ const displayLinks = ref(false)
         class=" absolute left-96 top-16 w-80  z-50  bg-gray-dark rounded-xl">
         <div class="flex flex-row flex-wrap justify-start p-2">
           <p v-for=" genere in generes " :key="genere.id"
-            @click="filterMovieByGenere(genere.name)" 
+            @click="filterMovieByGenere(genere.id)" 
             class="font-bold hover:border-primary6       border border-gray-dark hover:bg-primary7 hover:text-yellow-bright rounded-md my-1 mr-3  text-primary5 px-1 cursor-pointer">
             {{ genere.name }}
           </p>
@@ -150,7 +151,7 @@ const displayLinks = ref(false)
         class="  bg-gray-dark rounded-xl">
         <div   class="w-72 grid grid-cols-2 p-2">
           <p v-for=" genere in generes " :key="genere.id"
-            @click="filterMovieByGenere(genere.name)" 
+            @click="filterMovieByGenere(genere.id)" 
             class="font-bold hover:border-primary6       border border-gray-dark hover:bg-primary7 hover:text-yellow-bright rounded-md my-1 mr-3  text-primary5 px-1 cursor-pointer">
             {{ genere.name }}
           </p>
@@ -161,9 +162,7 @@ const displayLinks = ref(false)
   </div>
   </template>
   
-  <script setup>
-  
-  </script>
+
   
   
   

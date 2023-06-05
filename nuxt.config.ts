@@ -25,7 +25,7 @@ export default defineNuxtConfig({
       },
       authClient: {
         httpEndpoint: process.env.GRAPHQL_ENDPOINT || 'https://vue-shopping.hasura.app/v1/graphql',
-        tokenName: 'auth-token'
+        tokenName: 'user-token'
       }
     },
   },

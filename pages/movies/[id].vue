@@ -6,7 +6,7 @@ const id = useRoute().params.id;
 
 // fetch movies
 import getMovie from '@/graphql/movies/query/getMovie.gql'
-const { onResult, loading, onError, refetch } = useQuery(getMovie, {id})
+const { onResult, loading, onError, refetch } = query(getMovie, {id})
 let movie = ref()
 const serverError = reactive({
     error: false,
@@ -40,7 +40,7 @@ onError((error) => {
             <!-- Section 1 Movie Detail -->
             <section  id="detail-header-container"  class=" mt-20 pt-20 pb-40 bg-no-repeat bg-right  md:bg-center  bg-cover" >
                 <div v-if="!loading && !serverError.error" class="container p-4 mx-auto">
-                    <MoviesDetailsDetail :movie="movie"></MoviesDetailsDetail>
+                    <MoviesDetail :movie="movie"></MoviesDetail>
                 </div>
             </section>
             <!-- Directors and Actors Container -->
@@ -55,7 +55,7 @@ onError((error) => {
                 </div>
             </section>
             <!-- New Container -->
-            <MoviesDetailsRegister></MoviesDetailsRegister>
+            <OthersRegister></OthersRegister>
         </main>
     </div>
   </template>

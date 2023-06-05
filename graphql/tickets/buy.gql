@@ -1,8 +1,16 @@
 mutation buyTicket($data: tickets_insert_input!) {
   insert_tickets_one(object: $data){
     id
-    movie{
+    price
+    date
+    seat_number
+    movie {
+      id
       title
+      date
+      image {
+        url
+      }
     }
   }
 }

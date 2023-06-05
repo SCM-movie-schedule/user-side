@@ -23,11 +23,11 @@ const date = computed(()=>{
 })
 
 const rating = computed(()=>{
-    console.log(props.movie.title, props.movie.ratings_aggregate.aggregate.avg.rating)
-    if(props.movie.ratings_aggregate.aggregate.avg.rating == null){
+    // console.log(props.movie.title, props.movie.ratings_aggregate.aggregate.avg.rating)
+    if(props.movie?.ratings_aggregate?.aggregate?.avg?.rating == null){
         return 3.5
     }
-    return props.movie.ratings_aggregate.aggregate.avg.rating 
+    return props.movie?.ratings_aggregate?.aggregate?.avg?.rating 
 })
 const showGenere = ref(false)
 

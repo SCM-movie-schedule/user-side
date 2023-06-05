@@ -19,7 +19,7 @@
   <style scoped>
   .spinner {
     position: fixed;
-    top: 5rem;
+    top: 8rem;
     display: flex;
     justify-content: center;
     align-items: center;

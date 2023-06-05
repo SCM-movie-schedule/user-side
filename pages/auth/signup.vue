@@ -1,17 +1,16 @@
 <script setup>
-definePageMeta({
-  layout: "movies",
-});
 import { Form, Field } from 'vee-validate';
-import signupMutation from '@/graphql/auth/signup.gql'
-
- import * as Yup from 'yup';
- import { ref, watch} from 'vue'
- import { useRouter, useRoute, onBeforeRouteLeave} from 'vue-router'
- import { useAuthStore } from '@/stores/modules/auth'
-const authToken = useCookie('auth-token',  { path: '/' }, { maxAge: 60 * 60 * 24 * 10 })
+import loginMutation from '@/graphql/auth/login.gql'
+import authentication from '@/composables/authentication'
+import * as Yup from 'yup';
+import { ref, watch} from 'vue'
+import { useRouter, useRoute, onBeforeRouteLeave} from 'vue-router'
+import { useAuthStore } from '@/stores/modules/auth'
+const authToken = useCookie('auth-token',  { path: '/' }, { expires: 60 * 60 * 24 * 10 })
 const router = useRouter();
 const authStore = useAuthStore();
+ 
+// vee-validate
 
 const schema = Yup.object().shape({
   fullName: Yup.string("must be letter").
@@ -29,73 +28,49 @@ const schema = Yup.object().shape({
     .required('Please Confirm Password'),
 });
 
-// If there is a account with the same email before
-
-
-const fullName = ref('')
-const email = ref('')
-const password = ref('')
-
-
-const someThingWrong = ref(false);
+// reactive datas
 const invalidCredential = ref(false);
-let isloading = ref(false);
+const variables = ref({email: "",password: "", fullName:""});
+const someThingWrong = ref(false);
 
-function handleSignUp(){
-    const {mutate, onDone, loading, onError } = useMutation(
-         signupMutation,
-         () => ({
-           fetchPolicy: "network-only"
-         //   clientId: 'authClient'
-         })
-     );
-     isloading = loading
-     const variables = {
-        data: {
-            firstName: fullName.value.split(' ')[0],
-            lastName: fullName.value.split(' ')[1],
-            email: email.value,
-            password: password.value
-        }
-     }
-     mutate(variables)
-     onDone((result) => {
-         // check if result has value
-         if (result && result.data) {
-            console.log(result.data.signup)
-            // store token on cookie
-             authToken.value = 'Bearer '+ result.data.signup.token
-             authStore.setToken(result.data.signup.token)
-             authStore.setId(result.data.signup.id)
-             authStore.setRole(result.data.signup.role)
-             authStore.setUser(result.data.signup.id)
-             if(result.data.signup.role === 'admin'){
-                router.push('/admin')
-             }else{
-                router.push('/user')
-             }
-         }
-     });
-     onError((error) => {
+const {mutate, onDone, loading, onError } = authentication(loginMutation)
+// on done the user data has to setted so on done setAuthData is called
+onDone((result) => {
+    authToken.value = 'Bearer '+ result.data.login.token
+    authStore.setAuthData(result.data.login.id, result.data.login.role )
+});
 
-        if(error.message.includes('Invalid')){
-            invalidCredential.value = true
-        }else{
-            someThingWrong.value = true
-        }
-        console.log(error.message , 66767)
-        
-     });  
-}
+// on error the type of error is checked from error message
+// if error messge includes the word Invalid then the error is the result of invalid data
+// else the error come for diffirent reasons such internet connection, server erros and so on
 
+onError((error) => {
+    if(error.message.includes('Invalid')){
+        invalidCredential.value = true
+    }else{
+        someThingWrong.value = true
+    }
+    console.log(error , "When Login")
+});   
 
+// function to handle mutate
+function handleSignUp() {
+    // split fullName
+    variables.value.firstName = variables.value.fullName.split(' ')[0]
+    variables.value.lastName = variables.value.fullName.split(' ')[1]
+    console.log(variables, 'from signup')
 
-
-</script>
+    // mutate({data: {...variables.value}})
+} 
+// layout
+definePageMeta({
+  layout: "movies", 
+});
+ </script>
 <template>
-  <div class="register pt-16">
+  <div class="register pt-16 ">
     <base-dialog :show="someThingWrong" @close="someThingWrong = false" title="Some thing Went Wrong"></base-dialog>
-    <div id="detail-header-container" class="auth    bg-primary3 bg-no-repeat bg-cover bg-center relative pt-12">
+    <div id="detail-header-container" class="auth    bg-primary3 bg-no-repeat bg-cover bg-center relative py-12">
       <div class="back absolute opacity-75 inset-0 z-0" ></div>
        <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
         <div class="flex justify-center self-center z-10">
@@ -110,7 +85,7 @@ function handleSignUp(){
                 <!-- Full Name -->
               <div class="space-y-1 flex flex-col">
                 <label for="fullName"  class=" text-lg font-medium text-gray-700 tracking-wide"> Full Name </label>
-                <Field name="fullName"  v-model="fullName" type="text" class="w-full text-base px-4 py-2 border border-gray rounded-lg  focus:border-yellow-bright "  placeholder="Your Full Name" :class="{ 'border-red': errors.fullName }" />
+                <Field name="fullName"  v-model="variables.fullName" type="text" class="w-full text-base px-4 py-2 border border-gray rounded-lg  focus:border-yellow-bright "  placeholder="Your Full Name" :class="{ 'border-red': errors.fullName }" />
                  <transition name="error">
                     <span class="text-red text-sm" >{{errors.fullName}}</span>
                 </transition>
@@ -118,7 +93,7 @@ function handleSignUp(){
               <!-- Email -->
               <div class="space-y-2 flex flex-col">
                  <label class="text-sm font-medium text-gray-700 tracking-wide">Email *</label>
-                  <Field name="email" v-model="email" type="email" class="w-full text-base px-4 py-2 border border-gray rounded-lg  focus:border-yellow-bright "  placeholder="Your email" :class="{ 'border-red': errors.email }" />
+                  <Field name="email" v-model="variables.email" type="email" class="w-full text-base px-4 py-2 border border-gray rounded-lg  focus:border-yellow-bright "  placeholder="Your email" :class="{ 'border-red': errors.email }" />
                   <transition name="error">
                      <span class="text-red text-sm" >{{errors.email}}</span>
                  </transition>
@@ -128,7 +103,7 @@ function handleSignUp(){
                  <label class=" text-sm font-medium text-gray-700 tracking-wide">
                      Password *
                  </label>
-                  <Field name="password"  v-model="password" type="password" class="w-full text-base px-4 py-2 border border-gray rounded-lg    focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your Password" :class="{ 'border-red': errors.password }" />
+                  <Field name="password"  v-model="variables.password" type="password" class="w-full text-base px-4 py-2 border border-gray rounded-lg    focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your Password" :class="{ 'border-red': errors.password }" />
                   <transition name="error">
                      <span class="text-red text-sm" >{{errors.password}}</span>
                  </transition>
@@ -147,16 +122,16 @@ function handleSignUp(){
                 <p class="text-red-700">The email is already used  </p>
               </div>
               <div  class="flex justify-center">
-                <button  :disabled="isloading" type="submit" :class="{'bg-yellow-orange':isloading, 'hover:bg-orange-00':isloading,}" class=" w-44 flex justify-center bg-yellow-bright  opacity-80 hover:opacity-100 text-white  p-3  rounded-full  tracking-wide font-semibold shadow-lg  cursor-pointer transition  ease-in duration-400 ">
+                <button  :disabled="loading" type="submit" :class="{'bg-yellow-orange':loading, 'hover:bg-orange-00':loading,}" class=" w-44 flex justify-center bg-yellow-bright  opacity-80 hover:opacity-100 text-white  p-3  rounded-full  tracking-wide font-semibold shadow-lg  cursor-pointer transition  ease-in duration-400 ">
                      Sign up
-                    <span v-if="isloading" a class=" absolute animate-spin text-9xl inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                    <span v-if="loading" a class=" absolute animate-spin text-9xl inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
                 </button>
               </div>
             </div>
               </Form>
             <div class="mt-4">
               <p class="hover:text-orange-500 text-orange-400">
-                <NuxtLink class=" text-primary9" to="/auth/signup">Have already an account</NuxtLink>
+                <NuxtLink class=" text-primary9" to="/auth/login">Have already an account</NuxtLink>
               </p>
             </div>
             <div class="pt-5 text-center text-gray-400 text-xs">
