@@ -185,7 +185,6 @@ buyOnError((error) => {
         <div class="">
             <div class="w-80 mx-auto">
                 <img class="w-full h-auto" :src="imgUrl" alt="">
-                <a href="https://www.youtube.com/watch?v=R2gbPxeNk2E" class="popup-video"><img src="img/images/play_icon.png" alt=""></a>
             </div>
         </div>
         <!-- The right Side -->
