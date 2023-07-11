@@ -1,7 +1,7 @@
 <template>
     <div>
       <NuxtLayout>
-        <NuxtPage />
+        <NuxtPage  />
       </NuxtLayout>
     </div>
 </template>
@@ -26,4 +26,24 @@
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.25);
 }
 
+
+.page-enter-from{
+  opacity: 0;
+  /* transform: translateX(-40px); */
+}
+.page-enter-to, .page-leave-from{
+  opacity: 1;
+  /* transform: translateX(0); */
+}
+.page-enter-active{
+  transition: all 0.3s linear;
+}
+
+.page-leave-active{
+  transition: all 0.3s linear;
+}
+.page-leave-to{
+  opacity: 0;
+  /* transform: translateX(-40px); */
+}
 </style>

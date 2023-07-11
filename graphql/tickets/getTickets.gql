@@ -1,0 +1,19 @@
+query getTickets{
+    tickets{
+        id
+        price
+        seat_number
+        movie{
+        duration
+
+            id
+            title
+            image{
+                url
+            }
+            date
+        }
+        user_id
+        date
+    }
+}

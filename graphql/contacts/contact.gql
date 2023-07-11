@@ -1,5 +1,5 @@
-mutation contact($data: contacts_insert_input!){
-    insert_contacts_one(object: $data){
-        id
+mutation contact($data: [contacts_insert_input!]!){
+    insert_contacts(objects: $data){
+        affected_rows
     }
 }

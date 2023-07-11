@@ -1,24 +1,38 @@
 <script setup>
 
 import deleteNotification from '~/graphql/notifications/delete.gql'
+import getNotifications from '~/graphql/notifications/getNotifications.gql'
 import { useAuthStore } from '~/stores/modules/auth';
 const authStore = useAuthStore();
-const isloading = ref(true)
 definePageMeta({
     layout: "userpanel",
     middleware:["user"]
 });
 
-const {mutate, onDone, loading, onError } = mutation(deleteNotification, 'user');
+const {onResult, onError, loading, refetch} = authQuery(getNotifications, {})
+const notifications  = ref([])
+
+onResult(result=>{
+    console.log('the result ia', result.data)
+    // notifications.value = result.data.notifications
+    result.data.notifications.forEach(notification => {
+        notifications.value.push(notification)
+    });
+})
+onError(error=>{
+    console.log(error, 'when gettnig notifications')
+})
+
+const {mutate, onDone,  loading:deleteLoading, onError:deleteOnError } = mutation(deleteNotification, 'user');
 provide('deleteNotification',  (id) => {
     mutate({id})
 }) 
 onDone((result) => {
-    authStore.removeNotification(result.data.delete_notifications_by_pk.id)
-     
+    console.log(result.data.delete_notifications_by_pk)
+    notifications.value = notifications.value.filter( notification => result?.data?.delete_notifications_by_pk.id != notification.id)
 });
 
-onError((error) => {
+deleteOnError((error) => {
     console.log(error)
     window.alert('Something went wrong')
 }); 
@@ -26,11 +40,9 @@ onError((error) => {
 
 <template>
     
-    <NotificationsList v-if="authStore.getUser" :notifications="authStore.getUser?.users_notifications"></NotificationsList>
-    <BaseSpinner v-else-if="isloading && !authStore.getUser"></BaseSpinner>
-    <div v-else   class=" max-w-lg border-t-4 border-t-yellow-bright items-center  flex px-6 w-full justify-between py-8 bg-gray-dark">
+    <BaseSpinner v-if="loading"></BaseSpinner>
+    <NotificationsList v-if="notifications.length > 0" :notifications="notifications"></NotificationsList>
+    <div v-if="notifications.length == 0 && !loading"  class=" max-w-lg border-t-4 border-t-yellow-bright items-center  flex px-6 w-full justify-between py-8 bg-gray-dark">
         <p class=" text-white">oofs there is no notifications</p>
     </div>
 </template>
-
-<!-- The message and contact part should finshed today -->

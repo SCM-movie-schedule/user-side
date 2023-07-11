@@ -22,13 +22,6 @@ const date = computed(()=>{
     return new Date().toLocaleDateString()
 })
 
-const rating = computed(()=>{
-    // console.log(props.movie.title, props.movie.ratings_aggregate.aggregate.avg.rating)
-    if(props.movie?.ratings_aggregate?.aggregate?.avg?.rating == null){
-        return 3.5
-    }
-    return props.movie?.ratings_aggregate?.aggregate?.avg?.rating 
-})
 const showGenere = ref(false)
 
 </script>
@@ -79,7 +72,7 @@ const showGenere = ref(false)
                                         d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
                                     />
                                 </svg>
-                                {{ rating }}</span>
+                                {{ movie.rating_average || 3.5 }}</span>
                         </li>
                     </ul>
                 </div>

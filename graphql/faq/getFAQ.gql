@@ -1,0 +1,7 @@
+query getFAQs {
+  faqs {
+    id
+    question
+    answer
+  }
+}

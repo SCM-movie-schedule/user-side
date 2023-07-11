@@ -63,22 +63,7 @@ export const useAuthStore = defineStore({
           this.setToken(userToken.value)
         }
       } 
-    },
-    removeBooking(booking_id){
-      const bookings = this.user.bookings.filter(booking => booking.id != booking_id)
-      this.user.bookings = bookings
-    },
-    addBooking(booking){
-      const newBookings = [booking, ...this.user.bookings]
-      this.user.bookings = newBookings
-    },
-    addTicket(ticket){
-      const newTickets = [ticket, ...this.user.tickets]
-      this.user.tickets = newTickets
-    },
-    removeNotification(notification_id){
-      const notifications = this.user.users_notifications.filter(notification => notification.id != notification_id)
-      this.user.users_notifications = notifications
     }
+
   }
 })

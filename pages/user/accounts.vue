@@ -6,6 +6,8 @@ import updateUserMutation from '@/graphql/auth/updateUser.gql'
 import mutation from '@/composables/mutation'
 import { Form, Field } from 'vee-validate';
 import * as Yup from 'yup';
+const userToken = useCookie('user-token',  { path: '/' }, { expires: 60 * 60 * 24 * 10 })
+
 
 // vee-validate
 const schema = Yup.object().shape({
@@ -17,19 +19,7 @@ const schema = Yup.object().shape({
     password: Yup.string()
     .required('Current password is required'),
    
-    newPassword: Yup.string().nullable()
-    .min(6, 'Password must be at least 6 characters'),
-    confirmPassword: Yup.string()
-    // .when('newPassword', {
-    //   is: (val) => val && val.length > 0,
-    //   then: Yup.string()
-    //     .required('Confirm password is required')
-    //     .oneOf(
-    //       [Yup.ref('newPassword'), null],
-    //       'Passwords must match'
-    //     ),
-    //   otherwise: Yup.string(),
-    // }),
+    
 });
 const authStore = useAuthStore()
 const user = ref({
@@ -38,6 +28,7 @@ const user = ref({
     email: "",
     password: "",
     newPassword: "",
+    confirmPassword:""
 })
 
 function getUser(){
@@ -56,6 +47,17 @@ if(authStore.getUser){
     user.value.email = authStore.getUser.email
 
 }
+const newPasswordStatus = ref({
+    error: false,
+    message: ''
+})
+
+
+const confirmStatus = ref({
+    error: false,
+    message: ''
+})
+
 
 const updated = ref(false)
 const serverError = reactive({
@@ -64,18 +66,48 @@ const serverError = reactive({
 })
 const {mutate, onDone, onError, loading} = mutation(updateUserMutation, 'user')
 function updateUser(){
+    confirmStatus.value.error = false;
+    newPasswordStatus.value.error = false;
+
+    if(user.value.newPassword && user.value.newPassword.length < 6){
+        newPasswordStatus.value.error = true
+        newPasswordStatus.value.message = 'Password must be at least 6 characters'
+        return
+    }
+
+    if(user.value.confirmPassword && !user.value.newPassword){
+        newPasswordStatus.value.error = true;
+        newPasswordStatus.value.message = 'please provide password'
+    }
+
+    if(user.value.newPassword && !user.value.confirmPassword){
+        console.log('confirm password is required')
+        confirmStatus.value.error = true
+        confirmStatus.value.message = 'Please confirm your password'
+        return
+    }
+
+    if(user.value.newPassword != user.value.confirmPassword){
+        confirmStatus.value.error = true
+        confirmStatus.value.message = 'Passwords must be the same'
+        return
+    }
     const data = {
         firstName: user.value.firstName,
         lastName: user.value.lastName,
         email: user.value.email,
         password: user.value.password,
         newPassword: user.value.newPassword,
+        
     }
-    // mutate({data})
+    mutate({data})
 }
 
 onDone((result)=>{
     updated.value = true
+    userToken.value = 'Bearer '+ result.data.updateUser.token
+    authStore.setUserId(result.data.updateUser.id)
+    authStore.setToken(userToken.value)
     setTimeout(()=>{
         updated.value = false
     }, 5000)
@@ -101,7 +133,7 @@ definePageMeta({
 
 <template>
     <div v-if="user" class=" lg:ml-6  w-full">
-        <Form @change="invalidCredential = false"  @submit.prevent="updateUser" :validation-schema="schema" v-slot="{ errors }">
+        <Form @change="invalidCredential = false"  @submit="updateUser" :validation-schema="schema" v-slot="{ errors }">
             <!-- first name and last name -->
             <div class=" w-full  mb-4  flex">
                 <div  class=" w-full mr-4 text-primary9 ">
@@ -143,17 +175,17 @@ definePageMeta({
                 <!-- New Password -->
                 <div class=" my-6 w-full text-primary9">
                     <label for="newPassword">New password (leave blank to leave unchanged)<span class=" text-red font-bold  text-lg">*</span></label>
-                    <Field name="newPassword"  v-model="user.newPassword" type="password" class="w-full  p-3 border border-gray     focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your password" :class="{ 'border-red': errors.newPassword }" />
+                    <Field name="newPassword"  v-model="user.newPassword" type="password" class="w-full  p-3 border border-gray     focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your password" :class="{ 'border-red': newPasswordStatus.error }" />
                     <transition name="error">
-                        <span class="text-red text-sm" >{{errors.newPassword}}</span>
+                        <span v-show="newPasswordStatus.error" class="text-red text-sm" >{{newPasswordStatus.message}}</span>
                     </transition>
                 </div>
                 <!-- Confirm Password -->
                 <div class=" mt-6 w-full text-primary9">
                     <label for="confirm">Confirm new password<span class=" text-red font-bold  text-lg">*</span></label>
-                    <Field name="confirmPassword" type="password" class="w-full  p-3 border border-gray       focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your password" :class="{ 'border-red': errors.confirmPassword }" />
+                    <Field name="confirmPassword" v-model="user.confirmPassword" type="password" class="w-full  p-3 border border-gray       focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your password" :class="{ 'border-red': confirmStatus.error }" />
                     <transition name="error">
-                        <span class="text-red text-sm" >{{errors.confirmPassword}}</span>
+                        <span v-show="confirmStatus.error" class="text-red text-sm" >{{confirmStatus.message}}</span>
                     </transition>
                 </div>    
             </div>

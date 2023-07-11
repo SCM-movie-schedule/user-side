@@ -74,11 +74,9 @@ const book = () => {
 onDone((result) => {
     alertMessage.value = "Movie is Booked Succfully"
     successAlert.value = true
-    // console.log(result.data.insert_bookings_one)
-    authStore.addBooking(result.data.insert_bookings_one)
     setTimeout(() => {
         successAlert.value = false
-    }, 5000);
+    }, 3000);
     
 });
 
@@ -163,10 +161,7 @@ buyOnDone((result) => {
     alertMessage.value = "Ticket is Bought Succfully"
     successAlert.value = true
     tickets.value.push(selectedSeat.value)
-    const newTicket = {
-        ...result.data.insert_tickets_one,
-    }
-    authStore.addTicket(newTicket )
+   
     setTimeout(() => {
         successAlert.value = false
     }, 5000);
@@ -225,11 +220,11 @@ buyOnError((error) => {
                         <div class=" flex flex-col items-center relative">
                             <h6 class=" absolute -top-2">{{rating}}</h6>
                             <div class="rating self-center ">
-                                <input  @click="rate(5)"  type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-                                <input   @click="rate(4)" type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-                                <input   @click="rate(3)" type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-                                <input   @click="rate(2)" type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-                                <input   @click="rate(1)" type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                                <input  @click="rate(5)"  type="radio" name="rating" value="5" id="5"><label class=" before:opacity-0" for="5">☆</label>
+                                <input   @click="rate(4)" type="radio" name="rating" value="4" id="4"><label class=" before:opacity-0" for="4">☆</label>
+                                <input   @click="rate(3)" type="radio" name="rating" value="3" id="3"><label class=" before:opacity-0" for="3">☆</label>
+                                <input   @click="rate(2)" type="radio" name="rating" value="2" id="2"><label class=" before:opacity-0" for="2">☆</label>
+                                <input   @click="rate(1)" type="radio" name="rating" value="1" id="1"><label class=" before:opacity-0" for="1">☆</label>
                            </div>
                         </div>
                         
@@ -262,7 +257,7 @@ cursor: pointer;
 .rating > label::before{
 content: "\2605";
 position: absolute;
-opacity: 0;
+/* opacity: 0; */
 }
 
 .rating > label:hover:before,

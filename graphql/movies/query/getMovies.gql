@@ -16,12 +16,6 @@ query getMovies($query: movies_bool_exp) {
         id
       }
     }
-    ratings_aggregate {
-      aggregate {
-        avg {
-          rating
-        }
-      }
-    }
+    rating_average
   }
 }

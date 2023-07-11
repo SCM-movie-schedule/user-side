@@ -87,7 +87,7 @@ definePageMeta({
                              <label class=" text-sm font-medium text-gray-700 tracking-wide">
                                  Password *
                              </label>
-                              <Field name="password"  v-model="variables.password" type="password" class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg    focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your email" :class="{ 'border-red': errors.password }" />
+                              <Field name="password"  v-model="variables.password" type="password" class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg    focus:border focus:border-yellow-bright focus:border-solid "  placeholder="Your password" :class="{ 'border-red': errors.password }" />
                               <transition name="error">
                                  <span class="text-red text-sm" >{{errors.password}}</span>
                              </transition>
@@ -127,7 +127,7 @@ definePageMeta({
                      <div class="pt-5 text-center text-gray-400 text-xs">
                          <span>
                              Copyright © 2023
-                         <a href="" rel="" target="_blank" title="Ajimon" class=" text-yellow-bright font-bold">SDflx</a></span>
+                         <a href="" rel="" target="_blank" title="Ajimon" class=" text-yellow-bright font-bold">Solflx</a></span>
                      </div>
                  </div>
              </div>

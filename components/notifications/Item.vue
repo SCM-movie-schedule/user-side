@@ -25,10 +25,10 @@ const time = computed(() => {
 </script>
 
 <template>
-    <div class=" mx-auto max-w-lg mb-4 p-2 bg-gray-dark flex flex-nowrap justify-between items-center space-x-3">
+    <div class="  max-w-2xl mb-4 p-2 bg-white flex  border border-gray rounded-md flex-nowrap justify-between items-center space-x-3">
         <!-- left -->
         <div>   
-            <h2 class=" text-white py-2">New 
+            <h2 class="  py-2">New 
                 <svg xmlns="http://www.w3.org/2000/svg" 
                     width="20"
                     height="20"
@@ -42,11 +42,11 @@ const time = computed(() => {
 
                 <span class=" mx-2">{{ time }}</span>
             </h2>
-            <p class=" text-primary5">{{ notification.message }}.</p>
+            <p class=" ">{{ notification.message }}.</p>
         </div>
         <!-- right -->
-        <div class=" relative" @click="deleteMessage(notification.id)">
-            <svg xmlns="http://www.w3.org/2000/svg" 
+        <div class=" relative" :disabled="loading" @click="deleteMessage(notification.id)">
+            <svg xmlns="http://www.w3.org/loading2000/svg" 
                     width="30"
                     height="30"
                     class="text-yellow-bright cursor-pointer"

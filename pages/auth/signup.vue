@@ -1,6 +1,6 @@
 <script setup>
 import { Form, Field } from 'vee-validate';
-import loginMutation from '@/graphql/auth/login.gql'
+import signupMutation from '@/graphql/auth/signup.gql'
 import authentication from '@/composables/authentication'
 import * as Yup from 'yup';
 import { ref, watch} from 'vue'
@@ -33,11 +33,13 @@ const invalidCredential = ref(false);
 const variables = ref({email: "",password: "", fullName:""});
 const someThingWrong = ref(false);
 
-const {mutate, onDone, loading, onError } = authentication(loginMutation)
+const {mutate, onDone, loading, onError } = authentication(signupMutation)
 // on done the user data has to setted so on done setAuthData is called
 onDone((result) => {
-    authToken.value = 'Bearer '+ result.data.login.token
-    authStore.setAuthData(result.data.login.id, result.data.login.role )
+    authToken.value = 'Bearer '+ result.data.signup.token
+    authStore.setUserId(result.data.signup.id)
+    authStore.setToken(userToken.value)
+    router.push('/user')
 });
 
 // on error the type of error is checked from error message
@@ -50,7 +52,7 @@ onError((error) => {
     }else{
         someThingWrong.value = true
     }
-    console.log(error , "When Login")
+    console.log(error , "When signup")
 });   
 
 // function to handle mutate
@@ -60,7 +62,14 @@ function handleSignUp() {
     variables.value.lastName = variables.value.fullName.split(' ')[1]
     console.log(variables, 'from signup')
 
-    // mutate({data: {...variables.value}})
+    const data = {
+        email: variables.value.email,
+        password: variables.value.password,
+        firstName: variables.value.fullName.split(' ')[0],
+        lastName: variables.value.fullName.split(' ')[1]
+    }
+
+    mutate({data})
 } 
 // layout
 definePageMeta({

@@ -1,0 +1,12 @@
+query getBookings{
+    bookings{
+        id
+        movie{
+            id
+            title
+            image{
+                url
+            }
+        }  
+    }
+}

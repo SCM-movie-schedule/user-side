@@ -9,7 +9,7 @@ definePageMeta({
 </script>
 
 <template>
-    <section class="bg-white py-32">
+    <section class="bg-white mb-44 py-32">
         <h2 class=" text-3xl font-bold text-primary9 py-8 text-center">Our Pricing Plan</h2>
         <div class="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-8">
             <div class="bg-white shadow rounded-lg p-6 w-72">

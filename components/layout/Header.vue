@@ -72,7 +72,18 @@ const displayLinks = ref(false)
           <li >
             <NuxtLink active-class=" text-yellow-bright" class=" text-white font-bold   " to="/">HOME</NuxtLink>
           </li>
-          <li @mouseenter=" displayGenere = true"    class=" hover:text-yellow-bright text-white font-bold">
+          <li @mouseenter=" displayGenere = true"    class=" relative hover:text-yellow-bright text-white font-bold">
+            <div @mouseleave="displayGenere = false"
+                v-if="displayGenere && route.path== '/' && !loading && generes" 
+                class=" absolute -right-32 top-16 w-80  z-50  bg-gray-dark rounded-xl">
+                <div class="flex flex-row flex-wrap justify-start p-2">
+                  <p v-for=" genere in generes " :key="genere.id"
+                    @click="filterMovieByGenere(genere.id)" 
+                    class="font-bold hover:border-primary6       border border-gray-dark hover:bg-primary7 hover:text-yellow-bright rounded-md my-1 mr-3  text-primary5 px-1 cursor-pointer">
+                    {{ genere.name }}
+                  </p>
+              </div>
+            </div>
             <NuxtLink to="/">GENERE</NuxtLink>
           </li>
           <li  class=" text-white font-bold">
@@ -128,17 +139,7 @@ const displayLinks = ref(false)
   
 
       </nav>
-      <div @mouseleave="displayGenere = false"
-        v-if="displayGenere && route.path== '/' && !loading && generes" 
-        class=" absolute left-96 top-16 w-80  z-50  bg-gray-dark rounded-xl">
-        <div class="flex flex-row flex-wrap justify-start p-2">
-          <p v-for=" genere in generes " :key="genere.id"
-            @click="filterMovieByGenere(genere.id)" 
-            class="font-bold hover:border-primary6       border border-gray-dark hover:bg-primary7 hover:text-yellow-bright rounded-md my-1 mr-3  text-primary5 px-1 cursor-pointer">
-            {{ genere.name }}
-          </p>
-      </div>
-    </div>
+     
     </header>
 
     <div>
