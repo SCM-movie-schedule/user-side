@@ -140,14 +140,12 @@ definePageMeta({
 
 <style>
 #detail-header-container{
-    background-image: url(../assets/img/movie_details_bg.jpg);
+    background-image: url(@/assets/img/movie_details_bg.jpg);
  }
 @media (max-width: 660px) {
   .back {
     display: none;
     }
   }
- .auth{
-    background-image:url("");
-  }
+
 </style>
