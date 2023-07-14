@@ -83,7 +83,7 @@ definePageMeta({
       <div class="back absolute opacity-75 inset-0 z-0" ></div>
        <div class="md:min-h-screen sm:flex sm:flex-row mx-0 justify-center">
         <div class="flex justify-center self-center w-full md:w-auto z-10">
-          <div class="p-6 bg-white  w-full md:rounded-3xl ">
+          <div class="p-6 bg-white  w-full md:w-80 md:rounded-3xl ">
             <div class="mb-4">
               <h3 class="font-semibold text-2xl ">Sign up</h3>
               <p class="text-gray-500">Please fill the form to register.</p>
