@@ -79,11 +79,11 @@ definePageMeta({
 <template>
   <div class="register pt-16 ">
     <base-dialog :show="someThingWrong" @close="someThingWrong = false" title="Some thing Went Wrong"></base-dialog>
-    <div id="detail-header-container" class="auth    md:bg-primary3 bg-no-repeat bg-cover bg-center relative  py-6 md:py-12">
+    <div id="detail-header-container" class="auth     md:bg-primary3 bg-no-repeat bg-cover bg-center relative  py-6 md:py-12">
       <div class="back absolute opacity-75 inset-0 z-0" ></div>
-       <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
+       <div class="md:min-h-screen sm:flex sm:flex-row mx-0 justify-center">
         <div class="flex justify-center self-center w-full md:w-auto z-10">
-          <div class="p-8 bg-white  w-full md:rounded-3xl ">
+          <div class="p-6 bg-white  w-full md:rounded-3xl ">
             <div class="mb-4">
               <h3 class="font-semibold text-2xl ">Sign up</h3>
               <p class="text-gray-500">Please fill the form to register.</p>
@@ -131,7 +131,7 @@ definePageMeta({
                 <p class="text-red-700">The email is already used  </p>
               </div>
               <div  class="flex justify-center">
-                <button  :disabled="loading" type="submit" :class="{'bg-yellow-orange':loading, 'hover:bg-orange-00':loading,}" class=" w-44 flex justify-center bg-yellow-bright  opacity-80 hover:opacity-100 text-white  p-3  rounded-full  tracking-wide font-semibold shadow-lg  cursor-pointer transition  ease-in duration-400 ">
+                <button  :disabled="loading" type="submit" :class="{'bg-yellow-orange':loading, 'hover:bg-orange-00':loading,}" class=" w-44 flex justify-center bg-yellow-bright  hover:opacity-100 text-white  p-3  rounded-full  tracking-wide font-semibold shadow-lg  cursor-pointer transition  ease-in duration-400 ">
                      Sign up
                     <span v-if="loading" a class=" absolute animate-spin text-9xl inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
                 </button>
@@ -140,7 +140,7 @@ definePageMeta({
               </Form>
             <div class="mt-4">
               <p class="hover:text-orange-500 text-orange-400">
-                <NuxtLink class=" text-primary9" to="/auth/login">Have already an account</NuxtLink>
+                <NuxtLink class=" text-yellow-bright font-bold" to="/auth/login">Have already an account</NuxtLink>
               </p>
             </div>
             <div class="pt-5 text-center text-gray-400 text-xs">

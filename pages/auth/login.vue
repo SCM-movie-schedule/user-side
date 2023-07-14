@@ -56,20 +56,20 @@ definePageMeta({
 });
  </script>
  <template>
- <div class="login pt-16 ">
+ <div class="login pt-24">
      <base-dialog :show="someThingWrong" @close="someThingWrong = false" title="Some thing Went Wrong"></base-dialog>
-     <div id="detail-header-container" class="auth    md:bg-primary3 bg-no-repeat bg-cover bg-center relative md:pt-12" style="">
-      <div class="back absolute bg-gradient-to-l from-orange-600 to-orange-400 opacity-75 inset-0 z-1"></div>
-         <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
-             <div class="flex-col flex self-center p-10 sm:max-w-5xl xl:max-w-2xl z-10">
+     <div id="detail-header-container" class="auth  bg-red  md:bg-primary3 bg-no-repeat bg-cover bg-center relative md:pt-12" style="">
+      <div class="back  absolute bg-gradient-to-l from-orange-600 to-orange opacity-75 inset-0 z-1"></div>
+         <div class="md:min-h-screen sm:flex sm:flex-row mx-0 justify-center">
+             <!-- <div class="flex-col flex self-center sm:max-w-5xl xl:max-w-2xl z-10">
                  <div class="self-start hidden lg:flex flex-col text-white">
                      <img src="" class="mb-3" />
                      <h1 class="mb-3 font-bold text-5xl">Hi 👋 Welcome</h1>
                      <p class="pr-3"></p>
                  </div>
-             </div>
-             <div class="flex justify-center self-center  z-10">
-                 <div class="p-8 bg-white mx-auto md:rounded-3xl w-full">
+             </div> -->
+             <div class="flex justify-center self-center w-full  z-10">
+                 <div class="p-6 mx-auto md:rounded-3xl bg-white  w-full">
                      <div class="mb-4">
                          <h3 class="font-semibold text-2xl ">Sign In</h3>
                          <p class="text-gray-500">Please sign in to your account.</p>
@@ -120,7 +120,7 @@ definePageMeta({
                      </Form>
                      </div>
                      <div class="mt-4">
-                         <p class="hover:text-orange-500 text-orange-400">
+                         <p class="hover:text-orange-500 text-yellow-bright font-bold">
                              <NuxtLink to="/auth/signup">Register Now </NuxtLink >
                          </p>
                      </div>

@@ -57,14 +57,14 @@ definePageMeta({
 
  </script>
  <template>
- <div class=" pt-20 ">
+ <div class=" pt-24 md:pt-0">
      <base-dialog :show="someThingWrong" @close="someThingWrong = false" title="Some thing Went Wrong"></base-dialog>
      <div id="detail-header-container" class="auth    md:bg-primary3 bg-no-repeat bg-cover bg-center relative " >
       <div class="back absolute bg-gradient-to-l from-orange-600 to-orange-400 opacity-75 inset-0 z-1"></div>
-         <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
+         <div class=" md:min-h-screen sm:flex sm:flex-row mx-0 justify-center">
             
-             <div class="flex justify-center self-center  z-10">
-                 <div class="p-6 mx-auto bg-white  md:rounded-3xl w-96">
+             <div class="flex justify-center self-center w-full  z-10">
+                 <div class="p-6 mx-auto bg-white  md:rounded-3xl w-full">
                      <div class="mb-4">
                          <h3 class="font-semibold text-2xl ">Forgot  Password</h3>
                          <p class="text-gray-500">Please Enter Your Email</p>
@@ -97,7 +97,7 @@ definePageMeta({
                      </Form>
                      </div>
                      <div class="mt-4">
-                         <p class="hover:text-yellow-bright text-yellow-bright">
+                         <p class="hover:text-yellow-bright font-bold text-yellow-bright">
                              <router-link to="/auth/signup">Register Now </router-link>
                          </p>
                      </div>

@@ -21,7 +21,7 @@ function gotoMovieList() {
                           <div class=" flex flex-col justify-between items-center lg:flex-row">
                               <div class="my-8">
                                   <div class="footer-logo">
-                                      <a href="index.html"><img src="../../assets/img/logo.png" alt=""></a>
+                                      <a href="index.html"><img src="@/assets/img/logo.png" alt=""></a>
                                   </div>
                               </div>
                               <div class="">
@@ -31,17 +31,22 @@ function gotoMovieList() {
                                             <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold"  to="/">Home</NuxtLink></li>
                                             <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold"  to="/pricing">Pricing</NuxtLink></li>
                                             <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold"  to="/contactus">Contact</NuxtLink></li>
-                                            <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold" ></NuxtLink></li>
                                           </ul>
-                                          <div  class="py-6 ">    
+                                          <div  class="py-6 hidden ">    
                                                 <router-link class="text-white  w-full bg-primary2 font-bold rounded-full border-4 
                                                     border-solid border-yellow-bright py-3  px-20 lg:px-8 text-center hover:bg-yellow-bright hover:text-gray-dark  " 
                                                     to="/auth/signup">Register Now
                                                 </router-link>
-                                            </div>
+                                          </div>
                                       </nav>
                                   </div>
                               </div>
+                              <div  class="py-8 lg:hidden">    
+                                <router-link class="text-white  w-full bg-primary2 font-bold rounded-full border-4 
+                                    border-solid border-yellow-bright py-3  px-20 lg:px-8 text-center hover:bg-yellow-bright hover:text-gray-dark  " 
+                                    to="/auth/signup">Register Now
+                                </router-link>
+                             </div>
                           </div>
                       </div>
                       <!-- The saparotor --> 
@@ -54,8 +59,8 @@ function gotoMovieList() {
                               <div class="col-md-7">
                                   <div class="quick-link-list">
                                       <ul class=" text-primary5 flex justify-center space-x-2 uppercase">
-                                        <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white text-left hover:text-yellow-bright "  to="/faq">FAQ and Help Center</NuxtLink></li>
-                                        <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white text-left hover:text-yellow-bright "  to="/privacy">Terms of Use and Privacy</NuxtLink></li>
+                                        <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white text-left hover:text-yellow-bright "  to="/faq">FAQ and Help  <span class=" hidden md:inline">Center</span> </NuxtLink></li>
+                                        <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white text-left hover:text-yellow-bright "  to="/privacy">Terms of Use <span class=" hidden md:inline">and Privacy</span> </NuxtLink></li>
                                       </ul>
                                   </div>
                               </div>
