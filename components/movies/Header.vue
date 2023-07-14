@@ -10,7 +10,7 @@
                     <transition name="header">    
                         <div class="flex" >
                             <div class=" lg:flex-1/2 lg:w-1/2 pl-6 h-auto">
-                                <h6 class="  text-yellow-bright text-2xl" >SDflix</h6>
+                                <h6 class="  text-yellow-bright text-2xl" >SolFlx</h6>
                                 <h2 class="text-white text-6xl font-bold leading-tight"  >Unlimited <span class=" text-yellow-bright">Movie</span>, &amp; More.</h2>
                                 <div class="">
                                     <ul class="flex space-x-4 text-white">

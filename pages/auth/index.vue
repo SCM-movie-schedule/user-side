@@ -15,7 +15,6 @@ const router = useRouter();
 const authStore = useAuthStore();
  
 // vee-validate
-
 const schema = Yup.object().shape({
   fullName: Yup.string("must be letter").
       matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for name ")

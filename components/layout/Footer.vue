@@ -28,14 +28,14 @@ function gotoMovieList() {
                                   <div class="">
                                       <nav class=" flex  flex-col space-y-6 lg:flex-row lg:space-y-0 ">
                                           <ul class=" uppercase flex flex-nowrap justify-center items-center">
-                                              <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold"  to="/">Home</NuxtLink></li>
-                                         <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold"  to="/pricing">Pricing</NuxtLink></li>
-                                           <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold"  to="/contactus">Contact</NuxtLink></li>
-                                          <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold" ></NuxtLink></li>
+                                            <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold"  to="/">Home</NuxtLink></li>
+                                            <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold"  to="/pricing">Pricing</NuxtLink></li>
+                                            <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold"  to="/contactus">Contact</NuxtLink></li>
+                                            <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright font-bold" ></NuxtLink></li>
                                           </ul>
-                                          <div  class="py-6">    
-                                                <router-link class="text-white  bg-primary2 font-bold rounded-full border-4 
-                                                    border-solid border-yellow-bright py-3  px-8 text-center hover:bg-yellow-bright hover:text-gray-dark  " 
+                                          <div  class="py-6 ">    
+                                                <router-link class="text-white  w-full bg-primary2 font-bold rounded-full border-4 
+                                                    border-solid border-yellow-bright py-3  px-20 lg:px-8 text-center hover:bg-yellow-bright hover:text-gray-dark  " 
                                                     to="/auth/signup">Register Now
                                                 </router-link>
                                             </div>
