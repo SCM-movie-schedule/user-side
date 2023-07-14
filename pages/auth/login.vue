@@ -58,7 +58,7 @@ definePageMeta({
  <template>
  <div class="login pt-16 ">
      <base-dialog :show="someThingWrong" @close="someThingWrong = false" title="Some thing Went Wrong"></base-dialog>
-     <div id="detail-header-container" class="auth    bg-primary3 bg-no-repeat bg-cover bg-center relative pt-12" style="">
+     <div id="detail-header-container" class="auth    md:bg-primary3 bg-no-repeat bg-cover bg-center relative md:pt-12" style="">
       <div class="back absolute bg-gradient-to-l from-orange-600 to-orange-400 opacity-75 inset-0 z-1"></div>
          <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
              <div class="flex-col flex self-center p-10 sm:max-w-5xl xl:max-w-2xl z-10">
@@ -69,9 +69,9 @@ definePageMeta({
                  </div>
              </div>
              <div class="flex justify-center self-center  z-10">
-                 <div class="p-12 bg-white mx-auto rounded-3xl w-100">
+                 <div class="p-8 bg-white mx-auto md:rounded-3xl w-full">
                      <div class="mb-4">
-                         <h3 class="font-semibold text-2xl text-gray-800">Sign In</h3>
+                         <h3 class="font-semibold text-2xl ">Sign In</h3>
                          <p class="text-gray-500">Please sign in to your account.</p>
                      </div>
                      <div class="space-y-5">

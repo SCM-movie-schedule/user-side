@@ -73,13 +73,13 @@ definePageMeta({
 // tommorow contact us, and notification, page send message to user movie detail page
  </script>
 <template>
-  <div class="register  ">
+  <div class="pt-20  ">
     <base-dialog :show="someThingWrong" @close="someThingWrong = false" title="Some thing Went Wrong"></base-dialog>
     <div id="detail-header-container" class="auth    bg-primary3 bg-no-repeat bg-cover bg-center relative py-12">
       <div class="back absolute opacity-75 inset-0 z-0" ></div>
        <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
         <div class="flex justify-center self-center z-10">
-          <div class="p-8 bg-white mx-auto w-96 rounded-3xl w-100">
+          <div class="p-8 bg-white mx-auto w-full md:rounded-3xl w-100">
             <div class="mb-4">
               <h3 class="font-semibold text-2xl text-gray-dark">Reset Password</h3>
               <p class="text-gray">Please provide new password.</p>
