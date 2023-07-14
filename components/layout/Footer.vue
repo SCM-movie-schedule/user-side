@@ -54,8 +54,8 @@ function gotoMovieList() {
                               <div class="col-md-7">
                                   <div class="quick-link-list">
                                       <ul class=" text-primary5 flex justify-center space-x-2 uppercase">
-                                        <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright "  to="/faq">FAQ and Help Center</NuxtLink></li>
-                                        <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white hover:text-yellow-bright "  to="/privacy">Terms of Use and Privacy</NuxtLink></li>
+                                        <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white text-left hover:text-yellow-bright "  to="/faq">FAQ and Help Center</NuxtLink></li>
+                                        <li><NuxtLink active-class=" text-yellow-bright" class=" mx-4 text-white text-left hover:text-yellow-bright "  to="/privacy">Terms of Use and Privacy</NuxtLink></li>
                                       </ul>
                                   </div>
                               </div>

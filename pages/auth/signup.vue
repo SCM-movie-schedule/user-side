@@ -79,15 +79,15 @@ definePageMeta({
 <template>
   <div class="register pt-16 ">
     <base-dialog :show="someThingWrong" @close="someThingWrong = false" title="Some thing Went Wrong"></base-dialog>
-    <div id="detail-header-container" class="auth    bg-primary3 bg-no-repeat bg-cover bg-center relative py-12">
+    <div id="detail-header-container" class="auth    md:bg-primary3 bg-no-repeat bg-cover bg-center relative  py-6 md:py-12">
       <div class="back absolute opacity-75 inset-0 z-0" ></div>
        <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
-        <div class="flex justify-center self-center z-10">
-          <div class="p-8 bg-white mx-auto w-96 rounded-3xl w-100">
+        <div class="flex justify-center self-center w-full md:w-auto z-10">
+          <div class="p-8 bg-white  w-full md:rounded-3xl ">
             <div class="mb-4">
-              <h3 class="font-semibold text-2xl text-gray-800">Sign up</h3>
+              <h3 class="font-semibold text-2xl ">Sign up</h3>
               <p class="text-gray-500">Please fill the form to register.</p>
-            </div>
+            </div> 
             <!-- :validation-schema="schema" -->
             <Form @change="invalidCredential = false" class="space-y-5" @submit="handleSignUp" :validation-schema="schema" v-slot="{ errors }">
             <div class="space-y-3">

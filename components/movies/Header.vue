@@ -1,5 +1,22 @@
 
+<script setup>
 
+const showElement = ref(false);
+
+function check(){
+    setTimeout(() => {
+        showElement.value = true
+        
+    }, 200);
+    // setTimeout(() => {
+    //     showElement.value = false
+        
+    // }, 5000);
+}
+
+check()
+
+</script>
 
 <!-- Index Page Header -->
 <template>
@@ -8,7 +25,7 @@
            <div class="">
                <div class="">
                     <transition name="header">    
-                        <div class="flex" >
+                        <div class="flex" v-if="showElement" >
                             <div class=" lg:flex-1/2 lg:w-1/2 pl-6 h-auto">
                                 <h6 class="  text-yellow-bright text-2xl" >SolFlx</h6>
                                 <h2 class="text-white text-6xl font-bold leading-tight"  >Unlimited <span class=" text-yellow-bright">Movie</span>, &amp; More.</h2>
@@ -54,10 +71,9 @@
 .header-enter-to{
   opacity: 1;
   transform: translateX(0);
-  background-color: blue;
 }
 .header-enter-active{
-  transition: all 4s linear;
+  transition: all 2s linear;
 }
 
 </style>
