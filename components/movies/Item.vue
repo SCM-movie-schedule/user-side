@@ -35,7 +35,7 @@ const showGenere = ref(false)
                 </div>
             <div class="movie-poster hover:opacity-20 ">
                 <NuxtLink :to="detailLink">
-                    <img class=" w-full h-full object-cover" :src="imgUrl" alt="Cover Image">
+                    <img class=" w-full h-full object-cover" :src="imgUrl" :alt="movie.title">
                 </NuxtLink>
             </div>
             <div class="py-6 relative space-y-4">

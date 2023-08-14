@@ -63,7 +63,7 @@ const displayLinks = ref(false)
       <nav class="flex  relative justify-between container mx-auto  items-center py-6">
         <div class="left"  >
           <NuxtLink to="/" class="">
-            <img class="" src="../../assets/img/logo.png" alt="">
+            <img class="" src="@/assets/img/logo.png" alt="">
             
           </NuxtLink>
           <!-- <img src="../../assets/search.jpg" alt="search icon"> -->
@@ -108,7 +108,7 @@ const displayLinks = ref(false)
         <div v-else>
           <NuxtLink class="hidden lg:block text-white uppercase bg-primary2 font-bold rounded-full border-4 border-solid border-yellow-bright py-2 px-8 hover:bg-yellow-bright hover:text-gray-dark"  to="/auth/login">SIGN IN</NuxtLink>
         </div>
-        <div @mouseenter=" displayLinks = true" class="flex flex-col space-y-2 lg:hidden">
+        <div @click=" displayLinks = !displayLinks" class="flex flex-col space-y-2 lg:hidden">
           <span class="w-8 bg-white h-1"></span>
           <span class="w-8 bg-white h-1"></span>
           <span class="w-8 bg-white h-1"></span>
@@ -133,6 +133,9 @@ const displayLinks = ref(false)
             </p>
             <p class=" text-left uppercase my-2  text-white font-bold hover:text-yellow-bright">
             <NuxtLink active-class=" text-yellow-bright" class=" hover:text-yellow-bright text-white font-bold   " to="/faq">FAQ</NuxtLink>
+            </p>
+            <p class=" text-left uppercase my-2  text-white font-bold hover:text-yellow-bright">
+            <NuxtLink active-class=" text-yellow-bright" class=" hover:text-yellow-bright text-white font-bold   " to="/auth/login">login</NuxtLink>
             </p>
           </div>
         </div>

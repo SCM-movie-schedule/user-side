@@ -29,7 +29,7 @@ function setDirectorSearch(){
 <template>
     <div class="row mx-3">
         <!-- Image Section -->
-        <img @click="setDirectorSearch" class="w-full cursor-pointer md:w-72 h-72 object-cover" :src="imgUrl" alt="Director Image">
+        <img @click="setDirectorSearch" class="w-full cursor-pointer  h-72 object-cover" :src="imgUrl" alt="Director Image">
         <!-- card footer -->
         <div class=" flex justify-between my-4">
             <p class=" text-white font-bold">{{ fullName }}</p>
